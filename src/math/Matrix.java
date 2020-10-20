@@ -103,9 +103,9 @@ public class Matrix {
 
         Double[][] newData = new Double[o.numCols][this.numRows];
 
-        for(int row = 0; row < length; row++){
-            for(int col = 0; col < length; col++) {
-                newData[row][col] = dot(getRowAtIndex(row), o.data[col]);
+        for(int row = 0; row < this.numRows; row++){
+            for(int col = 0; col < o.numCols; col++) {
+                newData[col][row] = dot(getRowAtIndex(row, this), o.data[col]);
             }
         }
 
@@ -114,12 +114,12 @@ public class Matrix {
         this.numRows = data[0].length;
     }
 
-    private Double[] getRowAtIndex(int idx) {
+    private Double[] getRowAtIndex(int idx, Matrix m) {
 
-        Double[] row = new Double[numCols];
+        Double[] row = new Double[m.numCols];
 
-        for(int i = 0; i < numCols; i++) {
-            row[i] = data[i][idx];
+        for(int i = 0; i < m.numCols; i++) {
+            row[i] = m.data[i][idx];
         }
 
         return row;
