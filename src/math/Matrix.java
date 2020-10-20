@@ -18,7 +18,7 @@ public class Matrix {
 
         for(int col = 0; col < numCols; col++){
             for(int row = 0; row < numRows; row++) {
-                this.data[row][col] = 0d;
+                this.data[col][row] = 0d;
             }
         }
     }
@@ -32,7 +32,7 @@ public class Matrix {
     public void randomInitialization(double min, double max) {
         for(int col = 0; col < numCols; col++){
             for(int row = 0; row < numRows; row++) {
-                this.data[row][col] = ThreadLocalRandom.current().nextDouble(min, max);
+                this.data[col][row] = ThreadLocalRandom.current().nextDouble(min, max);
             }
         }
     }
@@ -88,6 +88,13 @@ public class Matrix {
         }
     }
 
+    public void transpose() {
+        Matrix m = transpositionOf(this);
+        this.data = m.data;
+        this.numRows = m.numRows;
+        this.numCols = m.numCols;
+    }
+
     private void multScalar(double o) {
         for(int col = 0; col < numCols; col++){
             for(int row = 0; row < numRows; row++) {
@@ -97,24 +104,39 @@ public class Matrix {
     }
 
     private void multMatrix(Matrix o) {
-        assert validMult(this, o);
+        Matrix m = multiplcationOf(this, o);
+        this.data = m.data;
+        this.numCols = m.numCols;
+        this.numRows = m.numRows;
+    }
 
-        int length = this.numRows;
+    public static Matrix multiplcationOf(Matrix a, Matrix b) {
+        assert validMult(a, b);
 
-        Double[][] newData = new Double[o.numCols][this.numRows];
+        Double[][] newData = new Double[b.numCols][a.numRows];
 
-        for(int row = 0; row < this.numRows; row++){
-            for(int col = 0; col < o.numCols; col++) {
-                newData[col][row] = dot(getRowAtIndex(row, this), o.data[col]);
+        for(int row = 0; row < a.numRows; row++){
+            for(int col = 0; col < b.numCols; col++) {
+                newData[col][row] = dot(getRowAtIndex(row, a), b.data[col]);
             }
         }
 
-        this.data = newData;
-        this.numCols = data.length;
-        this.numRows = data[0].length;
+        return new Matrix(newData[0].length, newData.length, newData);
+
     }
 
-    private Double[] getRowAtIndex(int idx, Matrix m) {
+    public static Matrix transpositionOf(Matrix m) {
+        Matrix result = new Matrix(m.numCols, m.numRows);
+
+        for(int row = 0; row < result.numRows; row++) {
+            for(int col = 0; col < result.numCols; col++) {
+                result.data[col][row] = m.data[row][col];
+            }
+        }
+        return result;
+    }
+
+    public static Double[] getRowAtIndex(int idx, Matrix m) {
 
         Double[] row = new Double[m.numCols];
 
@@ -153,6 +175,21 @@ public class Matrix {
 
         builder.deleteCharAt(builder.lastIndexOf("\n"));
         return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof Matrix)) return false;
+        Matrix other = (Matrix) o;
+
+        if(this.numCols != other.numCols || this.numRows != other.numRows) return false;
+
+        for(int i = 0; i < this.numRows; i++) {
+            for(int n = 0; n < this.numCols; n++) {
+                if(this.data[i][n] != other.data[i][n]) return false;
+            }
+        }
+        return true;
     }
 
 }

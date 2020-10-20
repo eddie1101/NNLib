@@ -1,8 +1,4 @@
-import function.activation.IActivationFunction;
-import function.error.IErrorFunction;
 import math.Matrix;
-import network.Network;
-import network.Perceptron;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,7 +14,7 @@ public class Main {
 
         m.add(o);
 
-        System.out.println("----------------------\n" + m);
+        System.out.println("-------Addition-------\n" + m);
 
 
         Double[][] mData = {
@@ -44,7 +40,11 @@ public class Main {
 
         m.mult(o);
 
-        System.out.println("----------------------\n" + m);
+        System.out.println("----Multiplication----\n" + m);
+
+        m.transpose();
+
+        System.out.println("----Transposition----\n" + m);
 
 
     }
