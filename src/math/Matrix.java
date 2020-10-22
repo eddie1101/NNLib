@@ -189,7 +189,7 @@ public class Matrix {
         return result;
     }
 
-    public Matrix copy(Matrix source, Matrix dest) {
+    public static Matrix copy(Matrix source, Matrix dest) {
         dest = new Matrix(source);
         return dest;
     }
