@@ -1,6 +1,6 @@
 package network;
 
-import function.activation.IActivationFunction;
+import function.OneParameterFunction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +12,7 @@ public class Network {
 
     double bias;
 
-    public Network(int layers, int nodes, int outputs, boolean rawOutputs, double bias, Double[] input, IActivationFunction func) {
+    public Network(int layers, int nodes, int outputs, boolean rawOutputs, double bias, Double[] input, OneParameterFunction func) {
         this.input = input;
         this.bias = bias;
 

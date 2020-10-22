@@ -1,7 +1,9 @@
 package function.activation;
 
+import function.OneParameterFunction;
+
 public class ActivationFunctions {
 
-    public static Sigmoid SIGMOID = new Sigmoid();
+    public static OneParameterFunction SIGMOID = new Sigmoid();
 
 }

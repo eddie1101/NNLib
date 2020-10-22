@@ -1,6 +1,7 @@
 package math;
 
-import java.text.DecimalFormat;
+import function.OneParameterFunction;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Matrix {
@@ -27,6 +28,12 @@ public class Matrix {
         this.data = data;
         this.numRows = numRows;
         this.numCols = numCols;
+    }
+
+    public Matrix(Matrix m) {
+        this.data = m.data;
+        this.numCols = m.numCols;
+        this.numRows = m.numRows;
     }
 
     public void randomInitialization(double min, double max) {
@@ -88,13 +95,6 @@ public class Matrix {
         }
     }
 
-    public void transpose() {
-        Matrix m = transpositionOf(this);
-        this.data = m.data;
-        this.numRows = m.numRows;
-        this.numCols = m.numCols;
-    }
-
     private void multScalar(double o) {
         for(int col = 0; col < numCols; col++){
             for(int row = 0; row < numRows; row++) {
@@ -125,17 +125,6 @@ public class Matrix {
 
     }
 
-    public static Matrix transpositionOf(Matrix m) {
-        Matrix result = new Matrix(m.numCols, m.numRows);
-
-        for(int row = 0; row < result.numRows; row++) {
-            for(int col = 0; col < result.numCols; col++) {
-                result.data[col][row] = m.data[row][col];
-            }
-        }
-        return result;
-    }
-
     public static Double[] getRowAtIndex(int idx, Matrix m) {
 
         Double[] row = new Double[m.numCols];
@@ -162,6 +151,49 @@ public class Matrix {
         return m1.numCols == m2.numRows;
     }
 
+    public void transpose() {
+        Matrix m = transpositionOf(this);
+        this.data = m.data;
+        this.numRows = m.numRows;
+        this.numCols = m.numCols;
+    }
+
+    public static Matrix transpositionOf(Matrix m) {
+        Matrix result = new Matrix(m.numCols, m.numRows);
+
+        for(int row = 0; row < result.numRows; row++) {
+            for(int col = 0; col < result.numCols; col++) {
+                result.data[col][row] = m.data[row][col];
+            }
+        }
+        return result;
+    }
+
+    public void map(OneParameterFunction func) {
+        Matrix m = mappingOf(this, func);
+        this.data = m.data;
+        this.numRows = m.numRows;
+        this.numCols = m.numCols;
+    }
+
+    public static Matrix mappingOf(Matrix m, OneParameterFunction func) {
+
+        Matrix result = new Matrix(m);
+
+        for(int col = 0; col < m.numCols; col++){
+            for(int row = 0; row < m.numRows; row++) {
+                result.data[col][row] = func.compute(m.data[col][row]);
+            }
+        }
+
+        return result;
+    }
+
+    public Matrix copy(Matrix source, Matrix dest) {
+        dest = new Matrix(source);
+        return dest;
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -186,7 +218,7 @@ public class Matrix {
 
         for(int i = 0; i < this.numRows; i++) {
             for(int n = 0; n < this.numCols; n++) {
-                if(this.data[i][n] != other.data[i][n]) return false;
+                if(!this.data[i][n].equals(other.data[i][n])) return false;
             }
         }
         return true;

@@ -1,17 +1,17 @@
 package network;
 
-import function.activation.IActivationFunction;
+import function.OneParameterFunction;
 import function.activation.Sigmoid;
 
 import java.util.*;
 
 public class Node {
 
-    IActivationFunction function;
+    OneParameterFunction function;
     ArrayList<Double> weights = new ArrayList<>();
     double bias = 0;
 
-    public Node(IActivationFunction function) {
+    public Node(OneParameterFunction function) {
         this.function = function;
     }
 
@@ -21,13 +21,13 @@ public class Node {
         randomInitialization(numWeights + 1);
     }
 
-    public Node(IActivationFunction function, int numWeights, double bias) {
+    public Node(OneParameterFunction function, int numWeights, double bias) {
         this.bias = bias;
         this.function = function;
         randomInitialization(numWeights + 1);
     }
 
-    public void setActivationFunction(IActivationFunction function) {
+    public void setActivationFunction(OneParameterFunction function) {
         this.function = function;
     }
 

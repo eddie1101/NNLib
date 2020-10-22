@@ -1,9 +1,12 @@
 package function.activation;
 
-public class Sigmoid implements IActivationFunction {
+import function.OneParameterFunction;
+
+public class Sigmoid implements OneParameterFunction {
 
     @Override
     public double compute(double in) {
-        return 1d / (1 + (Math.pow(Math.E, -in)));
+        return 1 / (1 + (Math.pow(Math.E, -in)));
     }
+
 }

@@ -1,7 +1,7 @@
 package network;
 
-import function.activation.IActivationFunction;
-import function.error.IErrorFunction;
+import function.OneParameterFunction;
+import function.TwoParameterFunction;
 
 import java.util.Random;
 
@@ -11,10 +11,10 @@ public class Perceptron {
     double learningRate = 0;
 
     Double[] weights;
-    IActivationFunction activation;
-    IErrorFunction error;
+    OneParameterFunction activation;
+    TwoParameterFunction error;
 
-    public Perceptron(Double[] weights, IActivationFunction activation, IErrorFunction error, double bias, double learningRate) {
+    public Perceptron(Double[] weights, OneParameterFunction activation, TwoParameterFunction error, double bias, double learningRate) {
         setWeights(weights);
         setActivationFunction(activation);
         setErrorFunction(error);
@@ -22,7 +22,7 @@ public class Perceptron {
         setLearningRate(learningRate);
     }
 
-    public Perceptron(int numWeights, IActivationFunction activation, IErrorFunction error, double bias, double learningRate) {
+    public Perceptron(int numWeights, OneParameterFunction activation, TwoParameterFunction error, double bias, double learningRate) {
         randomInitialization(numWeights);
         setActivationFunction(activation);
         setErrorFunction(error);
@@ -34,11 +34,11 @@ public class Perceptron {
         this.weights = weights;
     }
 
-    public void setActivationFunction(IActivationFunction activation) {
+    public void setActivationFunction(OneParameterFunction activation) {
         this.activation = activation;
     }
 
-    public void setErrorFunction(IErrorFunction error) {
+    public void setErrorFunction(TwoParameterFunction error) {
         this.error = error;
     }
 

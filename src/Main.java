@@ -46,6 +46,9 @@ public class Main {
 
         System.out.println("----Transposition----\n" + m);
 
+        m.map(in -> in / 2);
+
+        System.out.println("----Mapping----\n" + m);
 
     }
 
