@@ -2,6 +2,9 @@ package math;
 
 import function.OneParameterFunction;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Matrix {
@@ -34,6 +37,28 @@ public class Matrix {
         this.data = m.data;
         this.numCols = m.numCols;
         this.numRows = m.numRows;
+    }
+
+    public Matrix(Double[] array) {
+        this.numCols = 1;
+        this.numRows = array.length;
+        this.data = new Double[numCols][numRows];
+        System.arraycopy(array, 0, this.data[0], 0, array.length);
+    }
+
+    public Double[] toArray() {
+
+        ArrayList<Double> arr = new ArrayList<>();
+
+        for(int i = 0; i < this.numCols; i++) {
+            arr.addAll(Arrays.asList(this.data[i]).subList(0, this.numRows));
+        }
+
+        Double[] doubleArray = new Double[this.numCols * this.numRows];
+        arr.toArray(doubleArray);
+
+        return doubleArray;
+
     }
 
     public void randomInitialization(double min, double max) {

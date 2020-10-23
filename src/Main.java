@@ -50,6 +50,11 @@ public class Main {
 
         System.out.println("----Mapping----\n" + m);
 
+        Double[] arr = m.toArray();
+
+        System.out.println("----ToArray----\n");
+        for (Double aDouble : arr) System.out.println(aDouble);
+
     }
 
 }
