@@ -1,4 +1,4 @@
-package network;
+package neural_network;
 
 import function.OneParameterFunction;
 import function.TwoParameterFunction;

@@ -109,10 +109,8 @@ public class Matrix {
     }
 
     private void addMatrix(Matrix o) {
-        assert o.numRows == this.numRows;
-        assert o.numCols == this.numCols;
-
-        System.out.println(o.numRows == this.numRows && o.numCols == this.numCols);
+//        assert o.numRows == this.numRows;
+//        assert o.numCols == this.numCols;
 
         for(int col = 0; col < numCols; col++){
             for(int row = 0; row < numRows; row++) {
@@ -153,7 +151,7 @@ public class Matrix {
     }
 
     public static Matrix multiplcationOf(Matrix a, Matrix b) {
-        assert validMult(a, b);
+//        assert validMult(a, b);
 
         Double[][] newData = new Double[b.numCols][a.numRows];
 
@@ -179,7 +177,7 @@ public class Matrix {
     }
 
     public static double dot(Double[] v1, Double[] v2) {
-        assert v1.length == v2.length;
+//        assert v1.length == v2.length;
 
         double sum = 0;
         for(int i = 0; i < v1.length; i++) {
@@ -229,11 +227,6 @@ public class Matrix {
         }
 
         return result;
-    }
-
-    public static Matrix copy(Matrix source, Matrix dest) {
-        dest = new Matrix(source);
-        return dest;
     }
 
     @Override

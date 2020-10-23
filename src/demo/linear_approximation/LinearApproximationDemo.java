@@ -1,6 +1,6 @@
 package demo.linear_approximation;
 
-import network.Perceptron;
+import neural_network.Perceptron;
 
 public class LinearApproximationDemo {
 

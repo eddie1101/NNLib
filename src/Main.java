@@ -1,8 +1,28 @@
 import math.Matrix;
+import neural_network.NeuralNetwork;
+
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
+        neuralNetworkDebug();
+    }
 
+    public static void neuralNetworkDebug() {
+        NeuralNetwork neuralNetwork = new NeuralNetwork(2, 1, 2, 1);
+        System.out.println(neuralNetwork);
+
+        Double[] inputs = {1d, 0d};
+
+        Double[] result = neuralNetwork.forwardPropagation(inputs);
+
+        for(int i = 0; i < result.length; i++) {
+            System.out.print(result[i] + " ");
+        }
+        System.out.println();
+    }
+
+    public static void matrixDebug() {
         Matrix m = new Matrix(2, 2);
         m.randomInitialization(-10, 10);
 
@@ -54,7 +74,7 @@ public class Main {
 
         System.out.println("----ToArray----\n");
         for (Double aDouble : arr) System.out.println(aDouble);
-
     }
+
 
 }
