@@ -9,15 +9,19 @@ public class Main {
     }
 
     public static void neuralNetworkDebug() {
-        NeuralNetwork neuralNetwork = new NeuralNetwork(4, 1, 8, 2);
+        NeuralNetwork neuralNetwork = new NeuralNetwork(2, 1, 2, 1);
 
-        Double[] inputs = new Double[4];
+        Double[] inputs = new Double[2];
 
         for(int i = 0; i < inputs.length; i++) {
             inputs[i] = ThreadLocalRandom.current().nextGaussian();
         }
 
-        Double[] targets = {0.5, -0.5};
+        Double[] targets = new Double[1];
+
+        for(int i = 0; i < targets.length; i++) {
+            targets[i] = ThreadLocalRandom.current().nextGaussian();
+        }
 
         neuralNetwork.train(inputs, targets);
 

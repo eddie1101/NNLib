@@ -14,6 +14,8 @@ public class NeuralNetwork {
     int numNodesPerHiddenLayer;
     int numOutputs;
 
+    int matricesLength;
+
     public NeuralNetwork(int numInputs, int numHiddenLayers, int numNodesPerHiddenLayer, int numOutputs) {
 
         this.numInputs = numInputs;
@@ -21,7 +23,9 @@ public class NeuralNetwork {
         this.numNodesPerHiddenLayer = numNodesPerHiddenLayer;
         this.numOutputs = numOutputs;
 
-        this.weights = new Matrix[numHiddenLayers + 1];
+        this.matricesLength = numHiddenLayers + 1;
+
+        this.weights = new Matrix[matricesLength];
 
         for (int i = 0; i < weights.length; i++) {
             if(i == 0) {
@@ -36,7 +40,7 @@ public class NeuralNetwork {
             weights[i].randomInitialization();
         }
 
-        this.biases = new Matrix[numHiddenLayers + 1];
+        this.biases = new Matrix[matricesLength];
 
         for(int i = 0; i < biases.length; i++) {
             biases[i] = new Matrix(numNodesPerHiddenLayer, 1);
@@ -77,11 +81,25 @@ public class NeuralNetwork {
         Matrix outputMatrix = new Matrix(forwardPropagation(inputs));
         Matrix targetMatrix = new Matrix(targets);
 
-        Matrix errorMatrix = Matrix.mappingOf(targetMatrix, outputMatrix, ErrorFunctions.DIFFERENCE_ERROR);
+        Matrix outputError = Matrix.mappingOf(targetMatrix, outputMatrix, ErrorFunctions.DIFFERENCE_ERROR);
+
+        Matrix[] errors = new Matrix[matricesLength];
+
+        for(int i = 0; i < errors.length; i++) {
+            errors[i] = new Matrix(numNodesPerHiddenLayer, 1);
+        }
+
+        for(int i = matricesLength - 1; i >= 0; i--) {
+            if(i == matricesLength - 1) {
+                errors[i] = Matrix.multiplcationOf(Matrix.transpositionOf(weights[i]), outputError);
+            }else{
+                errors[i] = Matrix.multiplcationOf(Matrix.transpositionOf(weights[i]), errors[i + 1]);
+            }
+        }
+
 
         System.out.println(targetMatrix);
         System.out.println(outputMatrix);
-        System.out.println(errorMatrix);
 
     }
 
