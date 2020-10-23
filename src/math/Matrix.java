@@ -69,6 +69,14 @@ public class Matrix {
         }
     }
 
+    public void randomInitialization() {
+        for(int col = 0; col < numCols; col++){
+            for(int row = 0; row < numRows; row++) {
+                this.data[col][row] = ThreadLocalRandom.current().nextGaussian();
+            }
+        }
+    }
+
     public void add(Object o) {
         if(o instanceof Double) {
             Double od = (Double) o;
