@@ -14,6 +14,12 @@ public class Matrix {
 
     Double[][] data;
 
+    public Matrix() {
+        numRows = 0;
+        numCols = 0;
+        this.data = new Double[0][0];
+    }
+
     public Matrix(int numRows, int numCols) {
         this.numRows = numRows;
         this.numCols = numCols;
@@ -72,6 +78,7 @@ public class Matrix {
     public void randomInitialization() {
         for(int col = 0; col < numCols; col++){
             for(int row = 0; row < numRows; row++) {
+//                this.data[col][row] = Math.min(Math.max(ThreadLocalRandom.current().nextGaussian(), -1), 1);
                 this.data[col][row] = ThreadLocalRandom.current().nextGaussian();
             }
         }
@@ -96,7 +103,7 @@ public class Matrix {
     private void addScalar(double o) {
         for(int col = 0; col < numCols; col++){
             for(int row = 0; row < numRows; row++) {
-                data[row][col] += o;
+                data[col][row] += o;
             }
         }
     }
@@ -105,9 +112,11 @@ public class Matrix {
         assert o.numRows == this.numRows;
         assert o.numCols == this.numCols;
 
+        System.out.println(o.numRows == this.numRows && o.numCols == this.numCols);
+
         for(int col = 0; col < numCols; col++){
             for(int row = 0; row < numRows; row++) {
-                data[row][col] += o.data[row][col];
+                data[col][row] += o.data[col][row];
             }
         }
     }
@@ -131,7 +140,7 @@ public class Matrix {
     private void multScalar(double o) {
         for(int col = 0; col < numCols; col++){
             for(int row = 0; row < numRows; row++) {
-                data[row][col] *= o;
+                data[col][row] *= o;
             }
         }
     }
@@ -231,14 +240,12 @@ public class Matrix {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        for(int col = 0; col < numCols; col++) {
-            for (int row = 0; row < numRows; row++) {
-                builder.append(String.format("%5.2f", data[col][row])).append(" ");
+        for(int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numCols; col++) {
+                builder.append(String.format("%8.5f", data[col][row])).append(" ");
             }
             builder.append("\n");
         }
-
-        builder.deleteCharAt(builder.lastIndexOf("\n"));
         return builder.toString();
     }
 
