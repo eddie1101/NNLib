@@ -1,7 +1,7 @@
 import math.Matrix;
 import neural_network.NeuralNetwork;
 
-import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,10 +9,14 @@ public class Main {
     }
 
     public static void neuralNetworkDebug() {
-        NeuralNetwork neuralNetwork = new NeuralNetwork(2, 1, 2, 1);
+        NeuralNetwork neuralNetwork = new NeuralNetwork(1600, 40, 400, 100);
         System.out.println(neuralNetwork);
 
-        Double[] inputs = {1d, 0d};
+        Double[] inputs = new Double[1600];
+
+        for(int i = 0; i < inputs.length; i++) {
+            inputs[i] = ThreadLocalRandom.current().nextGaussian();
+        }
 
         Double[] result = neuralNetwork.forwardPropagation(inputs);
 
