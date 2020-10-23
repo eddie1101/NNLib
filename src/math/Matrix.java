@@ -235,7 +235,7 @@ public class Matrix {
 
         for(int i = 0; i < result.numRows; i++) {
             for(int n = 0; n < result.numCols; n++) {
-                result.data[i][n] = func.compute(m1.data[i][n], m2.data[i][n]);
+                result.data[n][i] = func.compute(m1.data[n][i], m2.data[n][i]);
             }
         }
 

@@ -10,7 +10,6 @@ public class Main {
 
     public static void neuralNetworkDebug() {
         NeuralNetwork neuralNetwork = new NeuralNetwork(4, 1, 8, 2);
-        System.out.println(neuralNetwork);
 
         Double[] inputs = new Double[4];
 
@@ -18,12 +17,10 @@ public class Main {
             inputs[i] = ThreadLocalRandom.current().nextGaussian();
         }
 
-        Double[] result = neuralNetwork.forwardPropagationDebug(inputs);
+        Double[] targets = {0.5, -0.5};
 
-        for (Double aDouble : result) {
-            System.out.print(aDouble + " ");
-        }
-        System.out.println();
+        neuralNetwork.train(inputs, targets);
+
     }
 
     public static void matrixDebug() {

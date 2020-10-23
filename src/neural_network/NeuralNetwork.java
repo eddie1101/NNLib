@@ -79,6 +79,8 @@ public class NeuralNetwork {
 
         Matrix errorMatrix = Matrix.mappingOf(targetMatrix, outputMatrix, ErrorFunctions.DIFFERENCE_ERROR);
 
+        System.out.println(targetMatrix);
+        System.out.println(outputMatrix);
         System.out.println(errorMatrix);
 
     }
