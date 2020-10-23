@@ -1,10 +1,17 @@
 package neural_network;
 
+import function.OneParameterFunction;
+import function.TwoParameterFunction;
 import function.activation.ActivationFunctions;
 import function.error.ErrorFunctions;
 import math.Matrix;
 
 public class NeuralNetwork {
+
+    double learningRate = 0.1;
+    OneParameterFunction activationFunction = ActivationFunctions.SIGMOID;
+    OneParameterFunction activationDerivative = ActivationFunctions.SIGMOID_DERIVATIVE;
+    TwoParameterFunction errorFunction = ErrorFunctions.DIFFERENCE_ERROR;
 
     Matrix[] weights;
     Matrix[] biases;
@@ -48,11 +55,31 @@ public class NeuralNetwork {
         }
     }
 
+    public NeuralNetwork setLearningRate(double learningRate) {
+        this.learningRate = learningRate;
+        return this;
+    }
+
+    public NeuralNetwork setActivation(OneParameterFunction func) {
+        this.activationFunction = func;
+        return this;
+    }
+
+    public NeuralNetwork setDerivative(OneParameterFunction func) {
+        this.activationDerivative = func;
+        return this;
+    }
+
+    public NeuralNetwork setError(TwoParameterFunction func) {
+        this.errorFunction = func;
+        return this;
+    }
+
     public Double[] forwardPropagation(Double[] inputs) {
 
         Matrix result = new Matrix(inputs);
         for(int i = 0; i < weights.length; i++) {
-            result = Matrix.multiplcationOf(weights[i], result);
+            result = Matrix.multiplicationOf(weights[i], result);
             result.add(biases[i]);
             result.map(ActivationFunctions.SIGMOID);
         }
@@ -61,20 +88,20 @@ public class NeuralNetwork {
 
     }
 
-    public Double[] forwardPropagationDebug(Double[] inputs) {
-
-        int count = 0;
-        Matrix result = new Matrix(inputs);
-        for(int i = 0; i < weights.length; i++, count++) {
-            System.out.println(count);
-            result = Matrix.multiplcationOf(weights[i], result);
-            result.add(biases[i]);
-            result.map(ActivationFunctions.SIGMOID);
-        }
-
-        return result.toArray();
-
-    }
+//    public Double[] forwardPropagationDebug(Double[] inputs) {
+//
+//        int count = 0;
+//        Matrix result = new Matrix(inputs);
+//        for(int i = 0; i < weights.length; i++, count++) {
+//            System.out.println(count);
+//            result = Matrix.multiplcationOf(weights[i], result);
+//            result.add(biases[i]);
+//            result.map(ActivationFunctions.SIGMOID);
+//        }
+//
+//        return result.toArray();
+//
+//    }
 
     public void train(Double[] inputs, Double[] targets) {
 
@@ -85,22 +112,16 @@ public class NeuralNetwork {
 
         Matrix[] errors = new Matrix[matricesLength];
 
-        for(int i = 0; i < errors.length; i++) {
-            errors[i] = new Matrix(numNodesPerHiddenLayer, 1);
-        }
-
         for(int i = matricesLength - 1; i >= 0; i--) {
             if(i == matricesLength - 1) {
-                errors[i] = Matrix.multiplcationOf(Matrix.transpositionOf(weights[i]), outputError);
+                errors[i] = Matrix.multiplicationOf(Matrix.transpositionOf(weights[i]), outputError);
             }else{
-                errors[i] = Matrix.multiplcationOf(Matrix.transpositionOf(weights[i]), errors[i + 1]);
+                errors[i] = Matrix.multiplicationOf(Matrix.transpositionOf(weights[i]), errors[i + 1]);
             }
         }
 
-
         System.out.println(targetMatrix);
         System.out.println(outputMatrix);
-
     }
 
     @Override

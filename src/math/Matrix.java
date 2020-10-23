@@ -5,7 +5,6 @@ import function.TwoParameterFunction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Matrix {
@@ -145,13 +144,13 @@ public class Matrix {
     }
 
     private void multMatrix(Matrix o) {
-        Matrix m = multiplcationOf(this, o);
+        Matrix m = multiplicationOf(this, o);
         this.data = m.data;
         this.numCols = m.numCols;
         this.numRows = m.numRows;
     }
 
-    public static Matrix multiplcationOf(Matrix a, Matrix b) {
+    public static Matrix multiplicationOf(Matrix a, Matrix b) {
 //        assert validMult(a, b);
 
         Double[][] newData = new Double[b.numCols][a.numRows];

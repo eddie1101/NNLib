@@ -1,3 +1,5 @@
+import function.activation.ActivationFunctions;
+import function.error.ErrorFunctions;
 import math.Matrix;
 import neural_network.NeuralNetwork;
 
@@ -9,15 +11,23 @@ public class Main {
     }
 
     public static void neuralNetworkDebug() {
-        NeuralNetwork neuralNetwork = new NeuralNetwork(2, 1, 2, 1);
+        NeuralNetwork neuralNetwork = new NeuralNetwork(
+                4,
+                3,
+                8,
+                2)
+                .setLearningRate(0.1)
+                .setActivation(ActivationFunctions.SIGMOID)
+                .setDerivative(ActivationFunctions.SIGMOID_DERIVATIVE)
+                .setError(ErrorFunctions.DIFFERENCE_ERROR);
 
-        Double[] inputs = new Double[2];
+        Double[] inputs = new Double[4];
 
         for(int i = 0; i < inputs.length; i++) {
             inputs[i] = ThreadLocalRandom.current().nextGaussian();
         }
 
-        Double[] targets = new Double[1];
+        Double[] targets = new Double[2];
 
         for(int i = 0; i < targets.length; i++) {
             targets[i] = ThreadLocalRandom.current().nextGaussian();
