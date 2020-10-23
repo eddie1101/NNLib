@@ -9,19 +9,19 @@ public class Main {
     }
 
     public static void neuralNetworkDebug() {
-        NeuralNetwork neuralNetwork = new NeuralNetwork(1600, 40, 400, 100);
+        NeuralNetwork neuralNetwork = new NeuralNetwork(4, 1, 8, 2);
         System.out.println(neuralNetwork);
 
-        Double[] inputs = new Double[1600];
+        Double[] inputs = new Double[4];
 
         for(int i = 0; i < inputs.length; i++) {
             inputs[i] = ThreadLocalRandom.current().nextGaussian();
         }
 
-        Double[] result = neuralNetwork.forwardPropagation(inputs);
+        Double[] result = neuralNetwork.forwardPropagationDebug(inputs);
 
-        for(int i = 0; i < result.length; i++) {
-            System.out.print(result[i] + " ");
+        for (Double aDouble : result) {
+            System.out.print(aDouble + " ");
         }
         System.out.println();
     }

@@ -1,6 +1,7 @@
 package neural_network;
 
 import function.activation.ActivationFunctions;
+import function.error.ErrorFunctions;
 import math.Matrix;
 
 public class NeuralNetwork {
@@ -38,11 +39,7 @@ public class NeuralNetwork {
         this.biases = new Matrix[numHiddenLayers + 1];
 
         for(int i = 0; i < biases.length; i++) {
-            if(i == 0) {
-                biases[i] = new Matrix(numInputs, 1);
-            }else {
-                biases[i] = new Matrix(numNodesPerHiddenLayer, 1);
-            }
+            biases[i] = new Matrix(numNodesPerHiddenLayer, 1);
             biases[i].randomInitialization();
         }
     }
@@ -57,6 +54,32 @@ public class NeuralNetwork {
         }
 
         return result.toArray();
+
+    }
+
+    public Double[] forwardPropagationDebug(Double[] inputs) {
+
+        int count = 0;
+        Matrix result = new Matrix(inputs);
+        for(int i = 0; i < weights.length; i++, count++) {
+            System.out.println(count);
+            result = Matrix.multiplcationOf(weights[i], result);
+            result.add(biases[i]);
+            result.map(ActivationFunctions.SIGMOID);
+        }
+
+        return result.toArray();
+
+    }
+
+    public void train(Double[] inputs, Double[] targets) {
+
+        Matrix outputMatrix = new Matrix(forwardPropagation(inputs));
+        Matrix targetMatrix = new Matrix(targets);
+
+        Matrix errorMatrix = Matrix.mappingOf(targetMatrix, outputMatrix, ErrorFunctions.DIFFERENCE_ERROR);
+
+        System.out.println(errorMatrix);
 
     }
 

@@ -1,6 +1,7 @@
 package math;
 
 import function.OneParameterFunction;
+import function.TwoParameterFunction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -227,6 +228,19 @@ public class Matrix {
         }
 
         return result;
+    }
+
+    public static Matrix mappingOf(Matrix m1, Matrix m2, TwoParameterFunction func) {
+        Matrix result = new Matrix(m1.numRows, m1.numCols);
+
+        for(int i = 0; i < result.numRows; i++) {
+            for(int n = 0; n < result.numCols; n++) {
+                result.data[i][n] = func.compute(m1.data[i][n], m2.data[i][n]);
+            }
+        }
+
+        return result;
+
     }
 
     @Override
