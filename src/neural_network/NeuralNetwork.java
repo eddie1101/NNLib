@@ -2,6 +2,7 @@ package neural_network;
 
 import function.OneParameterFunction;
 import function.TwoParameterFunction;
+import function.activation.ActivationFunction;
 import function.activation.ActivationFunctions;
 import function.error.ErrorFunctions;
 import math.Matrix;
@@ -9,8 +10,7 @@ import math.Matrix;
 public class NeuralNetwork {
 
     double learningRate = 0.1;
-    OneParameterFunction activationFunction = ActivationFunctions.SIGMOID;
-    OneParameterFunction activationDerivative = ActivationFunctions.SIGMOID_DERIVATIVE;
+    ActivationFunction activationFunction = ActivationFunctions.SIGMOID;
     TwoParameterFunction errorFunction = ErrorFunctions.DIFFERENCE_ERROR;
 
     Matrix[] weights;
@@ -60,13 +60,8 @@ public class NeuralNetwork {
         return this;
     }
 
-    public NeuralNetwork setActivation(OneParameterFunction func) {
+    public NeuralNetwork setActivation(ActivationFunction func) {
         this.activationFunction = func;
-        return this;
-    }
-
-    public NeuralNetwork setDerivative(OneParameterFunction func) {
-        this.activationDerivative = func;
         return this;
     }
 
@@ -81,7 +76,7 @@ public class NeuralNetwork {
         for(int i = 0; i < weights.length; i++) {
             result = Matrix.multiplicationOf(weights[i], result);
             result.add(biases[i]);
-            result.map(ActivationFunctions.SIGMOID);
+            result.map(ActivationFunctions.SIGMOID.extract());
         }
 
         return result.toArray();
