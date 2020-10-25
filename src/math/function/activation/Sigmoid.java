@@ -1,4 +1,4 @@
-package function.activation;
+package math.function.activation;
 
 public class Sigmoid extends ActivationFunction {
     public Sigmoid() {

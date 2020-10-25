@@ -1,6 +1,6 @@
-package function.error;
+package math.function.error;
 
-import function.TwoParameterFunction;
+import math.function.TwoParameterFunction;
 
 public class DifferenceError implements TwoParameterFunction {
     @Override

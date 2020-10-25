@@ -1,6 +1,6 @@
-import function.activation.ActivationFunctions;
-import function.error.ErrorFunctions;
-import math.Matrix;
+import math.function.activation.ActivationFunctions;
+import math.function.error.ErrorFunctions;
+import math.matrix.Matrix;
 import neural_network.NeuralNetwork;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -13,27 +13,39 @@ public class Main {
     public static void neuralNetworkDebug() {
         NeuralNetwork neuralNetwork = new NeuralNetwork(
                 4,
+                15,
                 3,
-                8,
-                2)
+                1)
+                .setWeightInitBounds(0, 1)
                 .setLearningRate(0.1)
-                .setActivation(ActivationFunctions.SIGMOID)
-                .setDerivative(ActivationFunctions.SIGMOID_DERIVATIVE)
+                .setActivation(ActivationFunctions.ReLU)
                 .setError(ErrorFunctions.DIFFERENCE_ERROR);
 
-        Double[] inputs = new Double[4];
+//        Double[] inputs = {1d, 0d};
 
+        Double[] inputs = new Double[4];
         for(int i = 0; i < inputs.length; i++) {
             inputs[i] = ThreadLocalRandom.current().nextGaussian();
         }
 
-        Double[] targets = new Double[2];
+//        Double[] targets = {1d};
 
+        Double[] targets = new Double[1];
         for(int i = 0; i < targets.length; i++) {
             targets[i] = ThreadLocalRandom.current().nextGaussian();
         }
 
+        System.out.println(neuralNetwork);
         neuralNetwork.train(inputs, targets);
+
+
+//        Double[] results = neuralNetwork.forwardPropagation(inputs);
+//
+//        for(Double result: results) {
+//            System.out.print(result + " ");
+//        }
+//        System.out.println();
+
 
     }
 

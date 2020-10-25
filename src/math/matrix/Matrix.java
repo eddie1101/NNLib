@@ -1,7 +1,7 @@
-package math;
+package math.matrix;
 
-import function.OneParameterFunction;
-import function.TwoParameterFunction;
+import math.function.OneParameterFunction;
+import math.function.TwoParameterFunction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -119,6 +119,29 @@ public class Matrix {
         }
     }
 
+    public void hadamard(Matrix o) {
+        Matrix m = hadamardOf(this, o);
+        this.data = m.data;
+        this.numCols = m.numCols;
+        this.numRows = m.numRows;
+    }
+
+    public static Matrix hadamardOf(Matrix a, Matrix b) {
+//        assert a.numRows == b.numRows;
+//        assert a.numCols == b.numCols;
+
+        Double[][] newData = new Double[a.numCols][a.numRows];
+
+        for(int c = 0; c < newData.length; c++) {
+            for(int r = 0; r < newData[0].length; r++) {
+                newData[c][r] = a.data[c][r] * b.data[c][r];
+            }
+        }
+
+        return new Matrix(newData[0].length, newData.length, newData);
+
+    }
+
     public void mult(Object o) {
         if(o instanceof Double) {
             Double od = (Double) o;
@@ -232,9 +255,9 @@ public class Matrix {
     public static Matrix mappingOf(Matrix m1, Matrix m2, TwoParameterFunction func) {
         Matrix result = new Matrix(m1.numRows, m1.numCols);
 
-        for(int i = 0; i < result.numRows; i++) {
-            for(int n = 0; n < result.numCols; n++) {
-                result.data[n][i] = func.compute(m1.data[n][i], m2.data[n][i]);
+        for(int c = 0; c < result.numCols; c++) {
+            for(int r = 0; r < result.numRows; r++) {
+                result.data[c][r] = func.compute(m1.data[c][r], m2.data[c][r]);
             }
         }
 

@@ -1,16 +1,18 @@
 package neural_network;
 
-import function.OneParameterFunction;
-import function.TwoParameterFunction;
-import function.activation.ActivationFunction;
-import function.activation.ActivationFunctions;
-import function.error.ErrorFunctions;
-import math.Matrix;
+import math.function.TwoParameterFunction;
+import math.function.activation.ActivationFunction;
+import math.function.activation.ActivationFunctions;
+import math.function.error.ErrorFunctions;
+import math.matrix.Matrix;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class NeuralNetwork {
 
     double learningRate = 0.1;
-    ActivationFunction activationFunction = ActivationFunctions.SIGMOID;
+    ActivationFunction activationFunction = ActivationFunctions.Sigmoid;
     TwoParameterFunction errorFunction = ErrorFunctions.DIFFERENCE_ERROR;
 
     Matrix[] weights;
@@ -50,9 +52,20 @@ public class NeuralNetwork {
         this.biases = new Matrix[matricesLength];
 
         for(int i = 0; i < biases.length; i++) {
-            biases[i] = new Matrix(numNodesPerHiddenLayer, 1);
+            if(i < biases.length - 1) {
+                biases[i] = new Matrix(numNodesPerHiddenLayer, 1);
+            }else {
+                biases[i] = new Matrix(numOutputs, 1);
+            }
             biases[i].randomInitialization();
         }
+    }
+
+    public NeuralNetwork setWeightInitBounds(double lower, double upper) {
+        for(Matrix weight: weights) {
+            weight.randomInitialization(lower, upper);
+        }
+        return this;
     }
 
     public NeuralNetwork setLearningRate(double learningRate) {
@@ -76,7 +89,7 @@ public class NeuralNetwork {
         for(int i = 0; i < weights.length; i++) {
             result = Matrix.multiplicationOf(weights[i], result);
             result.add(biases[i]);
-            result.map(ActivationFunctions.SIGMOID.extract());
+            result.map(ActivationFunctions.Sigmoid.extract());
         }
 
         return result.toArray();
@@ -100,23 +113,61 @@ public class NeuralNetwork {
 
     public void train(Double[] inputs, Double[] targets) {
 
-        Matrix outputMatrix = new Matrix(forwardPropagation(inputs));
+        ArrayList<Matrix> tempO = new ArrayList<>();
+        tempO.add(new Matrix(inputs));
+
+        tempO.addAll(Arrays.asList(trainForwardPropagation(inputs)));
+
+        Matrix[] outputs = new Matrix[tempO.size()];
+        outputs = tempO.toArray(outputs);
+
+        assert outputs.length == matricesLength + 1;
+
+        Matrix gradients = new Matrix();
+        Matrix error = new Matrix();
+        Matrix lastError = new Matrix();
         Matrix targetMatrix = new Matrix(targets);
 
-        Matrix outputError = Matrix.mappingOf(targetMatrix, outputMatrix, ErrorFunctions.DIFFERENCE_ERROR);
-
-        Matrix[] errors = new Matrix[matricesLength];
+        Matrix outputError = Matrix.mappingOf(targetMatrix, outputs[matricesLength - 1], ErrorFunctions.DIFFERENCE_ERROR);
 
         for(int i = matricesLength - 1; i >= 0; i--) {
             if(i == matricesLength - 1) {
-                errors[i] = Matrix.multiplicationOf(Matrix.transpositionOf(weights[i]), outputError);
+                error = outputError;
             }else{
-                errors[i] = Matrix.multiplicationOf(Matrix.transpositionOf(weights[i]), errors[i + 1]);
+                error = Matrix.multiplicationOf(Matrix.transpositionOf(weights[i + 1]), lastError);
             }
+            lastError = error;
+
+            gradients = Matrix.mappingOf(outputs[i + 1], this.activationFunction.dextract());
+            gradients.hadamard(error);
+            gradients.mult(learningRate);
+
+            Matrix oTranspose = Matrix.transpositionOf(outputs[i]);
+            Matrix dW = Matrix.multiplicationOf(gradients, oTranspose);
+
+            System.out.println("Transpose weight deltas:\n" + dW);
+
+            weights[i].add(dW);
+            biases[i].add(gradients);
+
         }
 
-        System.out.println(targetMatrix);
-        System.out.println(outputMatrix);
+    }
+
+    private Matrix[] trainForwardPropagation(Double[] inputs) {
+
+        Matrix result = new Matrix(inputs);
+        Matrix[] outputs = new Matrix[matricesLength];
+        for(int i = 0; i < weights.length; i++) {
+            result = Matrix.multiplicationOf(weights[i], result);
+            result.add(biases[i]);
+            result.map(ActivationFunctions.Sigmoid.extract());
+
+            outputs[i] = result;
+        }
+
+        return outputs;
+
     }
 
     @Override

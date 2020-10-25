@@ -1,4 +1,4 @@
-package function;
+package math.function;
 
 @FunctionalInterface
 public interface OneParameterFunction {

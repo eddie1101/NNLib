@@ -1,7 +1,7 @@
 package neural_network;
 
-import function.OneParameterFunction;
-import function.TwoParameterFunction;
+import math.function.OneParameterFunction;
+import math.function.TwoParameterFunction;
 
 import java.util.Random;
 

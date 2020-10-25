@@ -1,11 +1,11 @@
-package function.activation;
+package math.function.activation;
 
-import function.OneParameterFunction;
+import math.function.OneParameterFunction;
 
 public abstract class ActivationFunction {
 
-    public OneParameterFunction func;
-    public OneParameterFunction dfunc;
+    protected OneParameterFunction func;
+    protected OneParameterFunction dfunc;
 
     public ActivationFunction(OneParameterFunction func, OneParameterFunction dfunc) {
         this.func = func;
