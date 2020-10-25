@@ -1,7 +1,6 @@
 package neural_network;
 
 import com.google.gson.Gson;
-import math.function.TwoParameterFunction;
 import math.function.activation.ActivationFunction;
 import math.function.activation.ActivationFunctions;
 import math.function.error.ErrorFunction;
@@ -105,7 +104,7 @@ public class NeuralNetwork {
         for(int i = 0; i < weights.length; i++) {
             result = Matrix.multiplicationOf(weights[i], result);
             result.add(biases[i]);
-            result.map(ActivationFunctions.Sigmoid.extract());
+            result.map(this.activationFunction.extract());
         }
 
         return result.toArray();
@@ -175,7 +174,7 @@ public class NeuralNetwork {
         for(int i = 0; i < weights.length; i++) {
             result = Matrix.multiplicationOf(weights[i], result);
             result.add(biases[i]);
-            result.map(ActivationFunctions.Sigmoid.extract());
+            result.map(this.activationFunction.extract());
 
             outputs[i] = result;
         }
@@ -234,6 +233,11 @@ public class NeuralNetwork {
             String json = reader.readLine();
             ActivationFunction activation = ActivationFunctions.get(reader.readLine());
             ErrorFunction error = ErrorFunctions.get(reader.readLine());
+
+            if(activation == null)
+                throw new IOException("Activation function not found");
+            if(error == null)
+                throw new IOException("Error function not found");
 
             return gson.fromJson(json, NeuralNetwork.class)
                     .setActivation(activation)
