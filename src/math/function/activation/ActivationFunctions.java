@@ -7,10 +7,12 @@ public class ActivationFunctions {
 
     public static final ActivationFunction Sigmoid = new Sigmoid();
     public static final ActivationFunction ReLU = new Rectifier();
+    public static final ActivationFunction BoolCoerce = new BooleanCoercion();
 
     private static final ArrayList<ActivationFunction> functions = new ArrayList<>(Arrays.asList(
             Sigmoid,
-            ReLU
+            ReLU,
+            BoolCoerce
     ));
 
     public static ActivationFunction get(String name) {

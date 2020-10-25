@@ -33,7 +33,9 @@ public class LinearApproximationDemo {
     private static void initDemo() {
         perceptron = new Perceptron(2,
                 ((double in) -> in < 0 ? -1 : 1),
-                ((double target, double mark) -> target - mark), bias, learningRate);
+                ((double target, double mark) -> target - mark),
+                bias,
+                learningRate);
 
         trainingData = new LabledPoint[numTrainingPoints];
         testData = new LabledPoint[numTestPoints];
@@ -44,6 +46,16 @@ public class LinearApproximationDemo {
 
         for(int i = 0; i < numTestPoints; i++) {
             testData[i] = new LabledPoint();
+        }
+    }
+
+    private static void train() {
+        for (LabledPoint point : trainingData) {
+            Double[] inputs = new Double[2];
+            inputs[0] = point.x;
+            inputs[1] = point.y;
+
+            perceptron.train(inputs, point.label);
         }
     }
 
@@ -70,16 +82,6 @@ public class LinearApproximationDemo {
             }
         }
         System.out.println(correct + "/" + numTestPoints + String.format(": %.2f%%\n", ((float)correct / (float)numTestPoints) * 100));
-    }
-
-    private static void train() {
-        for (LabledPoint point : trainingData) {
-            Double[] inputs = new Double[2];
-            inputs[0] = point.x;
-            inputs[1] = point.y;
-
-            perceptron.train(inputs, point.label);
-        }
     }
 
 }
