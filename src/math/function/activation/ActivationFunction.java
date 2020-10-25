@@ -7,6 +7,8 @@ public abstract class ActivationFunction {
     protected OneParameterFunction func;
     protected OneParameterFunction dfunc;
 
+    protected String name;
+
     public ActivationFunction(OneParameterFunction func, OneParameterFunction dfunc) {
         this.func = func;
         this.dfunc = func;
@@ -27,5 +29,10 @@ public abstract class ActivationFunction {
     public OneParameterFunction dextract() {
         return this.dfunc;
     }
+
+    public String getName() {
+        return this.name;
+    }
+
 
 }

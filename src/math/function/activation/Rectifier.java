@@ -7,6 +7,7 @@ public class Rectifier extends ActivationFunction {
                 (in) -> in < 0 ? 0 : in,
                 (in) -> in < 0 ? 0 : 1
         );
+        this.name = "ReLU";
     }
 
 }

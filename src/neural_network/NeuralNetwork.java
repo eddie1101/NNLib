@@ -3,6 +3,7 @@ package neural_network;
 import math.function.TwoParameterFunction;
 import math.function.activation.ActivationFunction;
 import math.function.activation.ActivationFunctions;
+import math.function.error.ErrorFunction;
 import math.function.error.ErrorFunctions;
 import math.matrix.Matrix;
 
@@ -12,8 +13,8 @@ import java.util.Arrays;
 public class NeuralNetwork {
 
     double learningRate = 0.1;
-    ActivationFunction activationFunction = ActivationFunctions.Sigmoid;
-    TwoParameterFunction errorFunction = ErrorFunctions.DIFFERENCE_ERROR;
+    public transient ActivationFunction activationFunction = ActivationFunctions.Sigmoid;
+    public transient ErrorFunction errorFunction = ErrorFunctions.Difference;
 
     Matrix[] weights;
     Matrix[] biases;
@@ -61,6 +62,19 @@ public class NeuralNetwork {
         }
     }
 
+    public NeuralNetwork(NeuralNetwork clone) {
+        this.learningRate = clone.learningRate;
+        this.activationFunction = clone.activationFunction;
+        this.errorFunction = clone.errorFunction;
+        this.weights = clone.weights;
+        this.biases = clone.biases;
+        this.numInputs = clone.numInputs;
+        this.numHiddenLayers = clone.numHiddenLayers;
+        this.numNodesPerHiddenLayer = clone.numNodesPerHiddenLayer;
+        this.numOutputs = clone.numOutputs;
+        this.matricesLength = clone.matricesLength;
+    }
+
     public NeuralNetwork setWeightInitBounds(double lower, double upper) {
         for(Matrix weight: weights) {
             weight.randomInitialization(lower, upper);
@@ -78,7 +92,7 @@ public class NeuralNetwork {
         return this;
     }
 
-    public NeuralNetwork setError(TwoParameterFunction func) {
+    public NeuralNetwork setError(ErrorFunction func) {
         this.errorFunction = func;
         return this;
     }
@@ -128,7 +142,7 @@ public class NeuralNetwork {
         Matrix lastError = new Matrix();
         Matrix targetMatrix = new Matrix(targets);
 
-        Matrix outputError = Matrix.mappingOf(targetMatrix, outputs[matricesLength - 1], ErrorFunctions.DIFFERENCE_ERROR);
+        Matrix outputError = Matrix.mappingOf(targetMatrix, outputs[matricesLength - 1], ErrorFunctions.Difference.extract());
 
         for(int i = matricesLength - 1; i >= 0; i--) {
             if(i == matricesLength - 1) {
@@ -144,8 +158,6 @@ public class NeuralNetwork {
 
             Matrix oTranspose = Matrix.transpositionOf(outputs[i]);
             Matrix dW = Matrix.multiplicationOf(gradients, oTranspose);
-
-            System.out.println("Transpose weight deltas:\n" + dW);
 
             weights[i].add(dW);
             biases[i].add(gradients);
@@ -174,6 +186,9 @@ public class NeuralNetwork {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
+        builder.append("----------------\n");
+        builder.append(this.activationFunction.getName()).append("\n");
+        builder.append(this.errorFunction.getName()).append("\n");
         builder.append("----------------\n");
         for (int i = 0; i < this.weights.length; i++) {
             Matrix m = this.weights[i];

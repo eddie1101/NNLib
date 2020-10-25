@@ -7,5 +7,7 @@ public class Sigmoid extends ActivationFunction {
                 (in) -> in * (1 - in)
         );
 
+        this.name = "Sigmoid";
+
     }
 }

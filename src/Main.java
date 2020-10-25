@@ -1,8 +1,13 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import math.function.activation.ActivationFunction;
 import math.function.activation.ActivationFunctions;
+import math.function.error.ErrorFunction;
 import math.function.error.ErrorFunctions;
 import math.matrix.Matrix;
 import neural_network.NeuralNetwork;
 
+import java.io.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
@@ -12,18 +17,18 @@ public class Main {
 
     public static void neuralNetworkDebug() {
         NeuralNetwork neuralNetwork = new NeuralNetwork(
-                4,
-                15,
-                3,
+                2,
+                1,
+                2,
                 1)
                 .setWeightInitBounds(0, 1)
                 .setLearningRate(0.1)
                 .setActivation(ActivationFunctions.ReLU)
-                .setError(ErrorFunctions.DIFFERENCE_ERROR);
+                .setError(ErrorFunctions.Difference);
 
 //        Double[] inputs = {1d, 0d};
 
-        Double[] inputs = new Double[4];
+        Double[] inputs = new Double[2];
         for(int i = 0; i < inputs.length; i++) {
             inputs[i] = ThreadLocalRandom.current().nextGaussian();
         }
@@ -38,7 +43,6 @@ public class Main {
         System.out.println(neuralNetwork);
         neuralNetwork.train(inputs, targets);
 
-
 //        Double[] results = neuralNetwork.forwardPropagation(inputs);
 //
 //        for(Double result: results) {
@@ -46,6 +50,54 @@ public class Main {
 //        }
 //        System.out.println();
 
+        Gson gson = new Gson();
+
+        File nn = new File("./data/models/sample.json");
+
+        String jsonString = gson.toJson(neuralNetwork);
+
+        try {
+            FileWriter writer = new FileWriter(nn);
+            writer.write(jsonString + "\n");
+            writer.write(neuralNetwork.activationFunction.getName() + "\n");
+            writer.write(neuralNetwork.errorFunction.getName());
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        NeuralNetwork newNet = loadFromFile("./data./models./sample.json");
+
+        System.out.println(newNet);
+
+    }
+
+    public static NeuralNetwork loadFromFile(String path) {
+        File nnf = new File(path);
+        NeuralNetwork nn;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(nnf));
+
+            String jsonString = reader.readLine();
+
+            System.out.println(jsonString);
+
+            Gson gson = new Gson();
+
+            nn = gson.fromJson(jsonString, NeuralNetwork.class);
+
+            nn.setActivation(ActivationFunctions.get(reader.readLine()));
+            nn.setError(ErrorFunctions.get(reader.readLine()));
+
+            reader.close();
+
+            return nn;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
 
     }
 
