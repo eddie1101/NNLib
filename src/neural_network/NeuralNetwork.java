@@ -253,14 +253,14 @@ public class NeuralNetwork {
             ActivationFunction outputActivation = ActivationFunctions.get(reader.readLine());
             ErrorFunction error = ErrorFunctions.get(reader.readLine());
 
-            if(activation == null || outputActivation == null)
+            if(activation == null)
                 throw new IOException("Activation function not found");
             if(error == null)
                 throw new IOException("Error function not found");
 
             return gson.fromJson(json, NeuralNetwork.class)
                     .setActivation(activation)
-                    .setOutputActivation(outputActivation)
+                    .setOutputActivation(outputActivation == null ? activation : outputActivation)
                     .setError(error);
 
         } catch (IOException e) {

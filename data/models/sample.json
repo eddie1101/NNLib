@@ -1,3 +1,0 @@
-{"learningRate":0.1,"weights":[{"numRows":2,"numCols":2,"data":[[-0.04819271344738503,0.907672781438569],[1.0081430502697095,0.28938387754676087]]},{"numRows":1,"numCols":2,"data":[[0.8767687489076539],[0.15100335126157502]]}],"biases":[{"numRows":2,"numCols":1,"data":[[0.7216007911662841,0.8384674082527747]]},{"numRows":1,"numCols":1,"data":[[0.5193184757201326]]}],"numInputs":2,"numHiddenLayers":1,"numNodesPerHiddenLayer":2,"numOutputs":1,"matricesLength":2}
-ReLU
-Difference
