@@ -14,8 +14,8 @@ public class XORDemo {
     private static NeuralNetwork neuralNetwork;
 
     private static ActivationFunction activate = ActivationFunctions.Sigmoid;
-    private static ActivationFunction outputActivate = ActivationFunctions.Sigmoid;
-    private static ErrorFunction error = ErrorFunctions.Difference;
+    private static ActivationFunction outputActivate = ActivationFunctions.ReLU;
+    private static ErrorFunction error = ErrorFunctions.Square;
 
     private static final double learningRate = 0.1;
 
@@ -31,13 +31,13 @@ public class XORDemo {
         initDemo();
 
         System.out.println("NEW Neural Net with random weight initializations");
-        System.out.println("Before training: \nEvaluation | Label");
+        System.out.println("Before training:");
         evaluate();
 
         System.out.println("Training...\n");
         train();
 
-        System.out.println("After training: \nEvaluation | Label");
+        System.out.println("After training:");
         evaluate();
 
         System.out.println("\nDemonstrating pre-trained models:\n");
@@ -72,13 +72,7 @@ public class XORDemo {
 
     private static void evaluate() {
 
-        for (LabledBoolean datum : data) {
-            Double[] input = {datum.x, datum.y};
-            double target = datum.label[0];
-            double evaluation = neuralNetwork.forwardPropagation(input)[0];
-
-            System.out.println(String.format("%10.8f | %4.1f", evaluation, target));
-        }
+        demoModel(neuralNetwork);
         System.out.println();
     }
 
@@ -91,44 +85,33 @@ public class XORDemo {
 
         NeuralNetwork nnSigmoid = NeuralNetwork.loadFrom(sigmoidModelPath);
         System.out.println("Sigmoid model:");
-        System.out.println("Evaluation | Label");
-
-        for (LabledBoolean datum : data) {
-            Double[] input = {datum.x, datum.y};
-            double target = datum.label[0];
-            double evaluation = nnSigmoid.forwardPropagation(input)[0];
-
-            System.out.println(String.format("%10.8f | %4.1f", evaluation, target));
-        }
+        demoModel(nnSigmoid);
 
         System.out.println();
 
         NeuralNetwork nnReLU = NeuralNetwork.loadFrom(ReLUModelPath);
         System.out.println("ReLU model:");
-        System.out.println("Evaluation | Label");
-
-        for (LabledBoolean datum : data) {
-            Double[] input = {datum.x, datum.y};
-            double target = datum.label[0];
-            double evaluation = nnReLU.forwardPropagation(input)[0];
-
-            System.out.println(String.format("%10.8f | %4.1f", evaluation, target));
-        }
+        demoModel(nnReLU);
 
         System.out.println();
 
         NeuralNetwork nnSigmoidBooleanCoercion = NeuralNetwork.loadFrom(sigmoidBooleanCoercionModelPath);
         System.out.println("SigmoidBooleanCoercion model:");
+        demoModel(nnSigmoidBooleanCoercion);
+
+
+    }
+
+    private static void demoModel(NeuralNetwork nn) {
         System.out.println("Evaluation | Label");
 
         for (LabledBoolean datum : data) {
             Double[] input = {datum.x, datum.y};
             double target = datum.label[0];
-            double evaluation = nnSigmoidBooleanCoercion.forwardPropagation(input)[0];
+            double evaluation = nn.forwardPropagation(input)[0];
 
             System.out.println(String.format("%10.8f | %4.1f", evaluation, target));
         }
-
     }
 
 }
