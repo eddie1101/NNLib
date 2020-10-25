@@ -1,0 +1,4 @@
+{"learningRate":0.02,"weights":[{"numRows":2,"numCols":2,"data":[[17.416292959580638,16.85325601248988],[-17.014196331833148,-17.25510739390006]]},{"numRows":1,"numCols":2,"data":[[-12.922295001367464],[13.126949271685]]}],"biases":[{"numRows":2,"numCols":1,"data":[[8.54996819160402,-8.571330763858471]]},{"numRows":1,"numCols":1,"data":[[6.3588797371197865]]}],"numInputs":2,"numHiddenLayers":1,"numNodesPerHiddenLayer":2,"numOutputs":1,"matricesLength":2}
+Sigmoid
+Sigmoid
+Difference

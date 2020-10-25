@@ -10,10 +10,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class XORDemo {
 
-    public static String modelPath = "./data/models/XORDemoExample.json";
-    public static String testPath1 = "./data/models/XORDemoTest1.json";
-    public static String testPath2 = "./data/models/XORDemoTest2.json";
-
     private static LabledBoolean[] data;
     private static NeuralNetwork neuralNetwork;
 
@@ -23,24 +19,29 @@ public class XORDemo {
 
     private static final double learningRate = 0.1;
 
-    private static final int trainingIterations = 10000;
+    private static final int trainingIterations = 1000000;
+
+    private static final String path = "./data/models/XORDemo";
+    private static final String sigmoidModelPath = path + "Sigmoid.json";
+    private static final String ReLUModelPath = path + "ReLU.json";
+    private static final String sigmoidBooleanCoercionModelPath = path + "SigmoidBooleanCoercion.json";
 
     public static void main(String[] args) {
 
         initDemo();
 
+        System.out.println("NEW Neural Net with random weight initializations");
         System.out.println("Before training: \nEvaluation | Label");
         evaluate();
-
-        neuralNetwork.saveTo(testPath1);
 
         System.out.println("Training...\n");
         train();
 
-        neuralNetwork.saveTo(testPath2);
-
         System.out.println("After training: \nEvaluation | Label");
         evaluate();
+
+        System.out.println("\nDemonstrating pre-trained models:\n");
+        demoTrainedModels();
 
     }
 
@@ -71,9 +72,9 @@ public class XORDemo {
 
     private static void evaluate() {
 
-        for(int i = 0; i < data.length; i++) {
-            Double[] input = {data[i].x, data[i].y};
-            double target = data[i].label[0];
+        for (LabledBoolean datum : data) {
+            Double[] input = {datum.x, datum.y};
+            double target = datum.label[0];
             double evaluation = neuralNetwork.forwardPropagation(input)[0];
 
             System.out.println(String.format("%10.8f | %4.1f", evaluation, target));
@@ -84,6 +85,50 @@ public class XORDemo {
     private static LabledBoolean chooseRandom() {
         int pick = ThreadLocalRandom.current().nextInt(0, 4);
         return data[pick];
+    }
+
+    private static void demoTrainedModels() {
+
+        NeuralNetwork nnSigmoid = NeuralNetwork.loadFrom(sigmoidModelPath);
+        System.out.println("Sigmoid model:");
+        System.out.println("Evaluation | Label");
+
+        for (LabledBoolean datum : data) {
+            Double[] input = {datum.x, datum.y};
+            double target = datum.label[0];
+            double evaluation = nnSigmoid.forwardPropagation(input)[0];
+
+            System.out.println(String.format("%10.8f | %4.1f", evaluation, target));
+        }
+
+        System.out.println();
+
+        NeuralNetwork nnReLU = NeuralNetwork.loadFrom(ReLUModelPath);
+        System.out.println("ReLU model:");
+        System.out.println("Evaluation | Label");
+
+        for (LabledBoolean datum : data) {
+            Double[] input = {datum.x, datum.y};
+            double target = datum.label[0];
+            double evaluation = nnReLU.forwardPropagation(input)[0];
+
+            System.out.println(String.format("%10.8f | %4.1f", evaluation, target));
+        }
+
+        System.out.println();
+
+        NeuralNetwork nnSigmoidBooleanCoercion = NeuralNetwork.loadFrom(sigmoidBooleanCoercionModelPath);
+        System.out.println("SigmoidBooleanCoercion model:");
+        System.out.println("Evaluation | Label");
+
+        for (LabledBoolean datum : data) {
+            Double[] input = {datum.x, datum.y};
+            double target = datum.label[0];
+            double evaluation = nnSigmoidBooleanCoercion.forwardPropagation(input)[0];
+
+            System.out.println(String.format("%10.8f | %4.1f", evaluation, target));
+        }
+
     }
 
 }

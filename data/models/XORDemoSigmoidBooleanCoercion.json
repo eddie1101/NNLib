@@ -1,0 +1,4 @@
+{"learningRate":0.1,"weights":[{"numRows":2,"numCols":2,"data":[[0.6356603734719455,2.341101798173404],[0.6159279997512663,2.2910480648882183]]},{"numRows":1,"numCols":2,"data":[[-0.7778585474176647],[1.0823099391977917]]}],"biases":[{"numRows":2,"numCols":1,"data":[[1.3187527212293937,0.878387257544703]]},{"numRows":1,"numCols":1,"data":[[-0.35887451702325135]]}],"numInputs":2,"numHiddenLayers":1,"numNodesPerHiddenLayer":2,"numOutputs":1,"matricesLength":2}
+Sigmoid
+BoolCoerce
+Difference

@@ -1,3 +1,0 @@
-{"learningRate":0.01,"weights":[{"numRows":2,"numCols":2,"data":[[0.45571598018699344,0.3334345321165382],[0.18801836062654909,0.562869967147395]]},{"numRows":1,"numCols":2,"data":[[0.30816558002659655],[0.4014676880982174]]}],"biases":[{"numRows":2,"numCols":1,"data":[[-1.134319254039672,0.6823460958652346]]},{"numRows":1,"numCols":1,"data":[[1.3866751822056431]]}],"numInputs":2,"numHiddenLayers":1,"numNodesPerHiddenLayer":2,"numOutputs":1,"matricesLength":2}
-IntRound
-Difference

@@ -205,6 +205,7 @@ public class NeuralNetwork {
 
         builder.append("----------------\n");
         builder.append(this.activationFunction.getName()).append("\n");
+        builder.append(this.outputActivation.getName()).append("\n");
         builder.append(this.errorFunction.getName()).append("\n");
         builder.append("----------------\n");
         for (int i = 0; i < this.weights.length; i++) {
@@ -249,16 +250,17 @@ public class NeuralNetwork {
 
             String json = reader.readLine();
             ActivationFunction activation = ActivationFunctions.get(reader.readLine());
-            ActivationFunction activationOutput = ActivationFunctions.get(reader.readLine());
+            ActivationFunction outputActivation = ActivationFunctions.get(reader.readLine());
             ErrorFunction error = ErrorFunctions.get(reader.readLine());
 
-            if(activation == null || activationOutput == null)
+            if(activation == null || outputActivation == null)
                 throw new IOException("Activation function not found");
             if(error == null)
                 throw new IOException("Error function not found");
 
             return gson.fromJson(json, NeuralNetwork.class)
                     .setActivation(activation)
+                    .setOutputActivation(outputActivation)
                     .setError(error);
 
         } catch (IOException e) {
