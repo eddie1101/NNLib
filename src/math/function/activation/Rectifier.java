@@ -5,9 +5,10 @@ public class Rectifier extends ActivationFunction {
     public Rectifier() {
         super(
                 (in) -> in < 0 ? 0 : in,
-                (in) -> in < 0 ? 0 : 1
+                (in) -> in < 0 ? 0 : 1,
+                "ReLU"
         );
-        this.name = "ReLU";
+
     }
 
 }

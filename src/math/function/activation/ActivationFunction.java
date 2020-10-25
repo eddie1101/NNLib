@@ -4,14 +4,15 @@ import math.function.OneParameterFunction;
 
 public abstract class ActivationFunction {
 
-    protected OneParameterFunction func;
-    protected OneParameterFunction dfunc;
+    private OneParameterFunction func;
+    private OneParameterFunction dfunc;
 
-    protected String name;
+    private String name;
 
-    public ActivationFunction(OneParameterFunction func, OneParameterFunction dfunc) {
+    public ActivationFunction(OneParameterFunction func, OneParameterFunction dfunc, String name) {
         this.func = func;
         this.dfunc = func;
+        this.name = name;
     }
 
     public double compute(double in) {
@@ -33,6 +34,4 @@ public abstract class ActivationFunction {
     public String getName() {
         return this.name;
     }
-
-
 }

@@ -1,5 +1,6 @@
 package neural_network;
 
+import com.google.gson.Gson;
 import math.function.TwoParameterFunction;
 import math.function.activation.ActivationFunction;
 import math.function.activation.ActivationFunctions;
@@ -7,6 +8,7 @@ import math.function.error.ErrorFunction;
 import math.function.error.ErrorFunctions;
 import math.matrix.Matrix;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -205,6 +207,44 @@ public class NeuralNetwork {
         }
 
         return builder.toString();
+    }
+
+    public void saveTo(String path) {
+        File file = new File(path);
+        Gson gson = new Gson();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+
+            writer.write(gson.toJson(this) + "\n");
+            writer.write(this.activationFunction.getName() + "\n");
+            writer.write(this.errorFunction.getName());
+
+        } catch(java.io.IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    public static NeuralNetwork loadFrom(String path) {
+
+        File file = new File(path);
+        Gson gson = new Gson();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+
+            String json = reader.readLine();
+            ActivationFunction activation = ActivationFunctions.get(reader.readLine());
+            ErrorFunction error = ErrorFunctions.get(reader.readLine());
+
+            return gson.fromJson(json, NeuralNetwork.class)
+                    .setActivation(activation)
+                    .setError(error);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
     }
 
 }

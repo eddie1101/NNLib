@@ -4,12 +4,13 @@ import math.function.TwoParameterFunction;
 
 public abstract class  ErrorFunction {
 
-    protected TwoParameterFunction func;
+    private TwoParameterFunction func;
 
-    protected String name;
+    private String name;
 
-    public ErrorFunction(TwoParameterFunction func) {
+    public ErrorFunction(TwoParameterFunction func, String name) {
         this.func = func;
+        this.name = name;
     }
 
     public double compute(double in1, double in2) {
@@ -23,5 +24,4 @@ public abstract class  ErrorFunction {
     public String getName() {
         return this.name;
     }
-
 }
