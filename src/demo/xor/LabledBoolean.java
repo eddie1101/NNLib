@@ -1,16 +1,14 @@
 package demo.xor;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public class LabledBoolean {
 
     double x;
     double y;
     Double[] label;
 
-    public LabledBoolean() {
-        x = ThreadLocalRandom.current().nextBoolean() ? 1 : 0;
-        y = ThreadLocalRandom.current().nextBoolean() ? 1 : 0;
+    public LabledBoolean(double x, double y) {
+        this.x = x;
+        this.y = y;
 
         label = new Double[1];
 

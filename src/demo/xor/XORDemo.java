@@ -6,22 +6,24 @@ import math.function.error.ErrorFunction;
 import math.function.error.ErrorFunctions;
 import neural_network.NeuralNetwork;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class XORDemo {
 
     public static String modelPath = "./data/models/XORDemoExample.json";
+    public static String testPath1 = "./data/models/XORDemoTest1.json";
+    public static String testPath2 = "./data/models/XORDemoTest2.json";
 
-    private static LabledBoolean[] trainingData;
-    private static LabledBoolean[] testData;
+    private static LabledBoolean[] data;
     private static NeuralNetwork neuralNetwork;
 
-    private static ActivationFunction activate = ActivationFunctions.BoolCoerce;
+    private static ActivationFunction activate = ActivationFunctions.Sigmoid;
+    private static ActivationFunction outputActivate = ActivationFunctions.Sigmoid;
     private static ErrorFunction error = ErrorFunctions.Difference;
 
-    private static final double learningRate = 0.0001;
+    private static final double learningRate = 0.1;
 
-    private static final int numTrainingPoints = 10000;
-    private static final int numTestPoints = 1000;
-    private static final int numPointsToShow = 20;
+    private static final int trainingIterations = 10000;
 
     public static void main(String[] args) {
 
@@ -30,8 +32,12 @@ public class XORDemo {
         System.out.println("Before training: \nEvaluation | Label");
         evaluate();
 
+        neuralNetwork.saveTo(testPath1);
+
         System.out.println("Training...\n");
         train();
+
+        neuralNetwork.saveTo(testPath2);
 
         System.out.println("After training: \nEvaluation | Label");
         evaluate();
@@ -41,53 +47,43 @@ public class XORDemo {
     private static void initDemo() {
         neuralNetwork = new NeuralNetwork(2, 1, 2, 1)
                 .setActivation(activate)
+                .setOutputActivation(outputActivate)
                 .setError(error)
                 .setLearningRate(learningRate)
                 .setWeightInitBounds(0, 1);
 
-        trainingData = new LabledBoolean[numTrainingPoints];
-        testData = new LabledBoolean[numTestPoints];
+        data = new LabledBoolean[4];
+        data[0] = new LabledBoolean(0, 0);
+        data[1] = new LabledBoolean(1, 1);
+        data[2] = new LabledBoolean(0, 1);
+        data[3] = new LabledBoolean(1, 0);
 
-        for (int i = 0; i < trainingData.length; i++) {
-            trainingData[i] = new LabledBoolean();
-        }
-
-        for (int i = 0; i < testData.length; i++) {
-            testData[i] = new LabledBoolean();
-        }
     }
 
     private static void train() {
-        for(LabledBoolean data: trainingData) {
-            Double[] inputs = {data.x, data.y};
-            Double[] targets = data.label;
-            neuralNetwork.train(inputs, targets);
+        for(int i = 0; i < trainingIterations; i++) {
+            LabledBoolean bool = chooseRandom();
+            Double[] inputs = {bool.x, bool.y};
+            Double[] target = bool.label;
+            neuralNetwork.train(inputs, target);
         }
     }
 
     private static void evaluate() {
-        int correct = 0;
-        boolean displayLimit = false;
-        for (int i = 0; i < numTestPoints; i++) {
-            LabledBoolean data = testData[i];
-            Double[] inputs = {data.x, data.y};
 
-            Double[] output = neuralNetwork.forwardPropagation(inputs);
-            double evaluation = output[0]; //Rigged since this demo only has one output
-            double target = data.label[0];
+        for(int i = 0; i < data.length; i++) {
+            Double[] input = {data[i].x, data[i].y};
+            double target = data[i].label[0];
+            double evaluation = neuralNetwork.forwardPropagation(input)[0];
 
-            if (evaluation == target) {
-                correct++;
-            }
-
-            if((i <= numPointsToShow / 2 || i >= numTestPoints - numPointsToShow / 2)) {
-                System.out.println(String.format("%10.1f | %4.1f", evaluation, target));
-            }else if(!displayLimit){
-                System.out.println(String.format("%10s...", ""));
-                displayLimit = true;
-            }
+            System.out.println(String.format("%10.8f | %4.1f", evaluation, target));
         }
-        System.out.println(correct + "/" + numTestPoints + String.format(": %.2f%%\n", ((float)correct / (float)numTestPoints) * 100));
+        System.out.println();
+    }
+
+    private static LabledBoolean chooseRandom() {
+        int pick = ThreadLocalRandom.current().nextInt(0, 4);
+        return data[pick];
     }
 
 }

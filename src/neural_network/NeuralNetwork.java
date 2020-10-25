@@ -15,6 +15,7 @@ public class NeuralNetwork {
 
     double learningRate = 0.1;
     public transient ActivationFunction activationFunction = ActivationFunctions.Sigmoid;
+    public transient ActivationFunction outputActivation = activationFunction;
     public transient ErrorFunction errorFunction = ErrorFunctions.Difference;
 
     Matrix[] weights;
@@ -90,6 +91,12 @@ public class NeuralNetwork {
 
     public NeuralNetwork setActivation(ActivationFunction func) {
         this.activationFunction = func;
+        this.outputActivation = func;
+        return this;
+    }
+
+    public NeuralNetwork setOutputActivation(ActivationFunction func) {
+        this.outputActivation = func;
         return this;
     }
 
@@ -104,7 +111,10 @@ public class NeuralNetwork {
         for(int i = 0; i < weights.length; i++) {
             result = Matrix.multiplicationOf(weights[i], result);
             result.add(biases[i]);
-            result.map(this.activationFunction.extract());
+            if(i == weights.length - 1)
+                result.map(this.outputActivation.extract());
+            else
+                result.map(this.activationFunction.extract());
         }
 
         return result.toArray();
@@ -143,7 +153,7 @@ public class NeuralNetwork {
         Matrix lastError = new Matrix();
         Matrix targetMatrix = new Matrix(targets);
 
-        Matrix outputError = Matrix.mappingOf(targetMatrix, outputs[matricesLength - 1], ErrorFunctions.Difference.extract());
+        Matrix outputError = Matrix.mappingOf(targetMatrix, outputs[matricesLength], ErrorFunctions.Difference.extract());
 
         for(int i = matricesLength - 1; i >= 0; i--) {
             if(i == matricesLength - 1) {
@@ -153,7 +163,10 @@ public class NeuralNetwork {
             }
             lastError = error;
 
-            gradients = Matrix.mappingOf(outputs[i + 1], this.activationFunction.dextract());
+            if(i == matricesLength - 1)
+                gradients = Matrix.mappingOf(outputs[i + 1], this.outputActivation.dextract());
+            else
+                gradients = Matrix.mappingOf(outputs[i + 1], this.activationFunction.dextract());
             gradients.hadamard(error);
             gradients.mult(learningRate);
 
@@ -174,7 +187,10 @@ public class NeuralNetwork {
         for(int i = 0; i < weights.length; i++) {
             result = Matrix.multiplicationOf(weights[i], result);
             result.add(biases[i]);
-            result.map(this.activationFunction.extract());
+            if(i == weights.length - 1)
+                result.map(this.outputActivation.extract());
+            else
+                result.map(this.activationFunction.extract());
 
             outputs[i] = result;
         }
@@ -195,7 +211,7 @@ public class NeuralNetwork {
             Matrix m = this.weights[i];
             if(i == 0) {
                 builder.append("Weights from input to hidden layer 1:\n");
-            }else if(i > 0 && i < this.weights.length - 1) {
+            }else if(i < this.weights.length - 1) {
                 builder.append("Weights from hidden layer ").append(i).append(" to hidden layer ").append(i + 1).append(":\n");
             }else if(i == this.weights.length - 1) {
                 builder.append("Weights from hidden layer ").append(i).append(" to output layer:\n");
@@ -216,6 +232,7 @@ public class NeuralNetwork {
 
             writer.write(gson.toJson(this) + "\n");
             writer.write(this.activationFunction.getName() + "\n");
+            writer.write(this.outputActivation.getName() + "\n");
             writer.write(this.errorFunction.getName());
 
         } catch(java.io.IOException ioe) {
@@ -232,9 +249,10 @@ public class NeuralNetwork {
 
             String json = reader.readLine();
             ActivationFunction activation = ActivationFunctions.get(reader.readLine());
+            ActivationFunction activationOutput = ActivationFunctions.get(reader.readLine());
             ErrorFunction error = ErrorFunctions.get(reader.readLine());
 
-            if(activation == null)
+            if(activation == null || activationOutput == null)
                 throw new IOException("Activation function not found");
             if(error == null)
                 throw new IOException("Error function not found");

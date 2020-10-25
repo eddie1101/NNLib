@@ -4,7 +4,7 @@ public class BooleanCoercion extends ActivationFunction {
     public BooleanCoercion() {
         super(
                 (in) -> in >= 0 ? 1 : 0,
-                (in) -> 1,
+                (in) -> in >= 0 ? 1 : 0,
                 "BoolCoerce"
         );
     }

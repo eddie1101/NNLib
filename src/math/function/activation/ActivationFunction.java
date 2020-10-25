@@ -11,7 +11,7 @@ public abstract class ActivationFunction {
 
     public ActivationFunction(OneParameterFunction func, OneParameterFunction dfunc, String name) {
         this.func = func;
-        this.dfunc = func;
+        this.dfunc = dfunc;
         this.name = name;
     }
 
