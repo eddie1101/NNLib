@@ -1,7 +1,5 @@
 package math.function.error;
 
-import math.function.TwoParameterFunction;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 

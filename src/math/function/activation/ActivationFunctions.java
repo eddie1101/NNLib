@@ -6,13 +6,17 @@ import java.util.Arrays;
 public class ActivationFunctions {
 
     public static final ActivationFunction Sigmoid = new Sigmoid();
-    public static final ActivationFunction ReLU = new Rectifier();
-    public static final ActivationFunction BoolCoerce = new BooleanCoercion();
     public static final ActivationFunction Tanh = new Tanh();
+    public static final ActivationFunction ReLU = new ReLU();
+    public static final ActivationFunction SiLU = new SiLU();
+
+    public static final ActivationFunction BoolCoerce = new BooleanCoercion();
+
 
     private static final ArrayList<ActivationFunction> functions = new ArrayList<>(Arrays.asList(
             Sigmoid,
             ReLU,
+            SiLU,
             BoolCoerce,
             Tanh
     ));

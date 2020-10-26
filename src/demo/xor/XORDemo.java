@@ -14,7 +14,7 @@ public class XORDemo {
     private static NeuralNetwork neuralNetwork;
 
     private static ActivationFunction activate = ActivationFunctions.Sigmoid;
-    private static ActivationFunction outputActivate = ActivationFunctions.ReLU;
+    private static ActivationFunction outputActivate = ActivationFunctions.Sigmoid;
     private static ErrorFunction error = ErrorFunctions.Square;
 
     private static final double learningRate = 0.1;
@@ -46,7 +46,7 @@ public class XORDemo {
     }
 
     private static void initDemo() {
-        neuralNetwork = new NeuralNetwork(2, 1, 2, 1)
+        neuralNetwork = new NeuralNetwork(2, 1, 4, 1)
                 .setActivation(activate)
                 .setOutputActivation(outputActivate)
                 .setError(error)
