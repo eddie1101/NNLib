@@ -7,10 +7,12 @@ public class ErrorFunctions {
 
     public static ErrorFunction Square = new SquareError();
     public static ErrorFunction Difference = new DifferenceError();
+    public static ErrorFunction SquareDifference = new SquareDifferenceError();
 
     private static final ArrayList<ErrorFunction> functions = new ArrayList<>(Arrays.asList(
             Square,
-            Difference
+            Difference,
+            SquareDifference
     ));
 
     public static ErrorFunction get(String name) {
