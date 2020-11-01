@@ -152,7 +152,7 @@ public class NeuralNetwork {
         Matrix lastError = new Matrix();
         Matrix targetMatrix = new Matrix(targets);
 
-        Matrix outputError = Matrix.mappingOf(targetMatrix, outputs[matricesLength], ErrorFunctions.Difference.extract());
+        Matrix outputError = Matrix.mappingOf(targetMatrix, outputs[matricesLength], this.errorFunction.extract());
 
         for(int i = matricesLength - 1; i >= 0; i--) {
             if(i == matricesLength - 1) {
