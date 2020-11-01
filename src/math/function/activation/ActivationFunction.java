@@ -13,6 +13,7 @@ public abstract class ActivationFunction {
         this.func = func;
         this.dfunc = dfunc;
         this.name = name;
+        ActivationFunctions.register(this);
     }
 
     public double compute(double in) {

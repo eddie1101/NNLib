@@ -11,6 +11,7 @@ public abstract class  ErrorFunction {
     public ErrorFunction(TwoParameterFunction func, String name) {
         this.func = func;
         this.name = name;
+        ErrorFunctions.register(this);
     }
 
     public double compute(double in1, double in2) {
@@ -24,4 +25,11 @@ public abstract class  ErrorFunction {
     public String getName() {
         return this.name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(! (o instanceof ErrorFunction)) return false;
+        return ((ErrorFunction) o).getName().equals(this.name);
+    }
+
 }

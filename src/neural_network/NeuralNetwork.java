@@ -148,8 +148,7 @@ public class NeuralNetwork {
 
         assert outputs.length == matricesLength + 1;
 
-        Matrix gradients = new Matrix();
-        Matrix error = new Matrix();
+        Matrix gradients, error;
         Matrix lastError = new Matrix();
         Matrix targetMatrix = new Matrix(targets);
 
