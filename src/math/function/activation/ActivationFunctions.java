@@ -13,11 +13,13 @@ public class ActivationFunctions {
     public static final ActivationFunction BoolCoerce = new BooleanCoercion();
 
 
-    private static final ArrayList<ActivationFunction> functions = new ArrayList<>();
-
-    public static void register(ActivationFunction func) {
-        functions.add(func);
-    }
+    private static final ArrayList<ActivationFunction> functions = new ArrayList<>(Arrays.asList(
+            Sigmoid,
+            Tanh,
+            ReLU,
+            SiLU,
+            BoolCoerce
+    ));
 
     public static ActivationFunction get(String name) {
         for(ActivationFunction func: functions) {

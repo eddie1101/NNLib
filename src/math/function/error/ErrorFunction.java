@@ -11,7 +11,6 @@ public abstract class  ErrorFunction {
     public ErrorFunction(TwoParameterFunction func, String name) {
         this.func = func;
         this.name = name;
-        ErrorFunctions.register(this);
     }
 
     public double compute(double in1, double in2) {

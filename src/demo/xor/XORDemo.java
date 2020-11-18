@@ -15,11 +15,11 @@ public class XORDemo {
 
     private static ActivationFunction activate = ActivationFunctions.Sigmoid;
     private static ActivationFunction outputActivate = ActivationFunctions.Sigmoid;
-    private static ErrorFunction error = ErrorFunctions.Square;
+    private static ErrorFunction error = ErrorFunctions.Root;
 
     private static final double learningRate = 0.1;
 
-    private static final int trainingIterations = 1000000;
+    private static final int trainingIterations = 10000;
 
     private static final String path = "./data/models/XORDemo";
     private static final String sigmoidModelPath = path + "Sigmoid.json";

@@ -1,6 +1,7 @@
 package math.function.error;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ErrorFunctions {
 
@@ -9,13 +10,12 @@ public class ErrorFunctions {
     public static ErrorFunction SquareDifference = new SquareDifferenceError();
     public static ErrorFunction Root = new RootError();
 
-    private static final ArrayList<ErrorFunction> functions = new ArrayList<>();
-
-    public static void register(ErrorFunction func) {
-        if(!functions.contains(func)) {
-            functions.add(func);
-        }
-    }
+    private static final ArrayList<ErrorFunction> functions = new ArrayList<>(Arrays.asList(
+            Square,
+            Difference,
+            SquareDifference,
+            Root
+    ));
 
     public static ErrorFunction get(String name) {
         for(ErrorFunction func: functions) {
