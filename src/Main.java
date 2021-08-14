@@ -1,14 +1,63 @@
 import math.function.activation.ActivationFunctions;
+import math.function.error.ErrorFunction;
 import math.function.error.ErrorFunctions;
 import math.matrix.Matrix;
 import neural_network.NeuralNetwork;
 
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
     public static void main(String[] args) {
-        neuralNetworkDebug();
+        neuralNetworkTestWeightInitialization();
+//        neuralNetworkDebug();
 //        matrixDebug();
+    }
+
+    public static void neuralNetworkTestWeightInitialization() {
+        NeuralNetwork nnSmallInputs = new NeuralNetwork(
+                5,
+                5,
+                10,
+                3
+                )
+                .initializeWeights()
+                .setLearningRate(0.1)
+                .setActivation(ActivationFunctions.Sigmoid)
+                .setError(ErrorFunctions.SquareDifference);
+
+        NeuralNetwork nnBigInputs = new NeuralNetwork(
+                500,
+                500,
+                100,
+                3
+                )
+                .initializeWeights()
+                .setLearningRate(0.1)
+                .setActivation(ActivationFunctions.Sigmoid)
+                .setError(ErrorFunctions.SquareDifference);
+
+        Double[][] bigData = new Double[10000][500];
+        Double[][] smallData = new Double[10000][5];
+
+        Double[] dataTarget = new Double[] {1d, 1d, 1d};
+
+        for(int i = 0; i < bigData.length; i++) {
+            for(int n = 0; n < bigData[0].length; n++) {
+                bigData[i][n] = ThreadLocalRandom.current().nextGaussian();
+            }
+        }
+
+        for(int i = 0; i < smallData.length; i++) {
+            for(int n = 0; n < smallData[0].length; n++) {
+                smallData[i][n] = ThreadLocalRandom.current().nextGaussian();
+            }
+        }
+
+        System.out.println(Arrays.toString(nnBigInputs.forwardPropagation(bigData[0])));
+//        System.out.println(Arrays.toString(nnSmallInputs.forwardPropagation(smallData[0])));
+
+
     }
 
     public static void neuralNetworkDebug() {

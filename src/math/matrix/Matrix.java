@@ -75,7 +75,7 @@ public class Matrix {
         }
     }
 
-    public void randomInitialization() {
+    public void standardNormal() {
         for(int col = 0; col < numCols; col++){
             for(int row = 0; row < numRows; row++) {
 //                this.data[col][row] = Math.min(Math.max(ThreadLocalRandom.current().nextGaussian(), -1), 1);
@@ -97,6 +97,8 @@ public class Matrix {
         }else if(o instanceof Matrix) {
             Matrix om = (Matrix) o;
             addMatrix(om);
+        }else{
+            System.err.println("Unsupported type for matrix addition: " + o.toString());
         }
     }
 
@@ -155,6 +157,8 @@ public class Matrix {
         }else if(o instanceof Matrix) {
             Matrix om = (Matrix) o;
             multMatrix(om);
+        }else{
+            System.err.println("Unsupported type for matrix multiplication: " + o.toString());
         }
     }
 
@@ -171,6 +175,21 @@ public class Matrix {
         this.data = m.data;
         this.numCols = m.numCols;
         this.numRows = m.numRows;
+    }
+
+    public static Matrix multiplicationOf(Matrix a, double scalar) {
+//        assert validMult(a, b);
+
+        Double[][] newData = new Double[a.numCols][a.numRows];
+
+        for(int row = 0; row < a.numRows; row++){
+            for(int col = 0; col < a.numCols; col++) {
+                newData[col][row] = a.data[col][row] * scalar;
+            }
+        }
+
+        return new Matrix(newData[0].length, newData.length, newData);
+
     }
 
     public static Matrix multiplicationOf(Matrix a, Matrix b) {
@@ -201,6 +220,11 @@ public class Matrix {
 
     public static double dot(Double[] v1, Double[] v2) {
 //        assert v1.length == v2.length;
+
+        if(v1.length != v2.length) {
+            System.err.println("Cannot compute the dot product of vectors without parallel elements!");
+            return 0d;
+        }
 
         double sum = 0;
         for(int i = 0; i < v1.length; i++) {

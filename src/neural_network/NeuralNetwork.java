@@ -49,7 +49,7 @@ public class NeuralNetwork {
             }else{
                 weights[i] = new Matrix(); //????
             }
-            weights[i].randomInitialization();
+            weights[i].standardNormal();
         }
 
         this.biases = new Matrix[matricesLength];
@@ -60,7 +60,7 @@ public class NeuralNetwork {
             }else {
                 biases[i] = new Matrix(numOutputs, 1);
             }
-            biases[i].randomInitialization();
+            biases[i].standardNormal();
         }
     }
 
@@ -80,6 +80,14 @@ public class NeuralNetwork {
     public NeuralNetwork setWeightInitBounds(double lower, double upper) {
         for(Matrix weight: weights) {
             weight.randomInitialization(lower, upper);
+        }
+        return this;
+    }
+
+    public NeuralNetwork initializeWeights() {
+        for (Matrix weight : weights) {
+            weight.standardNormal();
+            weight.mult(1d / Math.sqrt(this.numInputs));
         }
         return this;
     }
@@ -116,6 +124,7 @@ public class NeuralNetwork {
             else
                 result.map(this.activationFunction.extract());
         }
+
 
         return result.toArray();
 
